@@ -45,7 +45,7 @@ export default function Home() {
           </button>
         </section>
         <section className="flex flex-col gap-8 h-full my-4 text-xl mt-10">
-          <TextArea />
+          <TextArea text={""} />
         </section>
       </div>
     </div>
