@@ -25,7 +25,7 @@ export async function GET() {
     });
 
     // sort by name
-    data.sort((a, b) => a.name.localeCompare(b.name));
+    data.sort((a, b) => a?.name?.localeCompare(b?.name));
 
     return Response.json(data);
 }
