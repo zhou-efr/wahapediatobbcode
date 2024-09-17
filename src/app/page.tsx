@@ -1,6 +1,7 @@
 "use client";
 
 import TextArea from "@/components/textarea";
+import { getModelBBCode } from "@/utils/bbcodeconverter";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -109,7 +110,7 @@ export default function Home() {
       return;
     }
     const stats = await getStats(model, unit, faction, detachment);
-    setText(JSON.stringify(stats, null, 2));
+    setText(getModelBBCode(stats));
   }
 
   return (
@@ -192,7 +193,7 @@ export default function Home() {
             </label>
           )}
           <button
-            className="w-fit px-4 py-2 bg-tyranids-500 text-white rounded-lg"
+            className="w-fit px-4 py-2 bg-tyranids-500 text-white rounded-lg hover:bg-tyranids-400"
             onClick={onSubmit}
           >
             Générer
