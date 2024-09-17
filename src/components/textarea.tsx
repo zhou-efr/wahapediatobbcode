@@ -1,9 +1,8 @@
 'use client'
 
-import { useRef, useState } from "react"
+import { useRef } from "react"
 
 export default function TextArea({ text }: { text: string }) {
-    const [textContent, setTextContent] = useState<string>(text || '');
     const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
     const handleCopy = () => {
@@ -24,9 +23,9 @@ export default function TextArea({ text }: { text: string }) {
                     rows={2}
                     ref={textAreaRef}
                     placeholder="Write a description..."
-                    className="block w-full flex-grow resize-none border-0 text-gray-900 dark:text-gray-400 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 bg-white dark:bg-dark-100 p-3"
-                    defaultValue={textContent}
-                    onChange={(e) => setTextContent(e.target.value)}
+                    className="block w-full flex-grow resize-none border-0 text-gray-900 dark:text-gray-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 bg-white dark:bg-dark-100 p-3"
+                    defaultValue={text}
+                // disabled
                 />
 
                 {/* Spacer element to match the height of the toolbar */}
