@@ -69,14 +69,14 @@ export function getModelBBCode(model: Model): string {
     const italic = (text: string): string => { return `[i]${text}[/i]` };
     const underline = (text: string): string => { return `[u]${text}[/u]` };
 
-    // const red = (text: string): string => { return `[ff0000]${text}[/color]` };
-    const blue = (text: string): string => { return `[6699ff]${text}[/color]` };
+    const red = (text: string): string => { return `[ff0000]${text}[-]` };
+    const blue = (text: string): string => { return `[6699ff]${text}[-]` };
 
-    text += blue(bold(model.model.name)) + "\n";
+    text += red(bold(model.model.name)) + "\n";
     text += underline("stats") + "\n";
     text += `M: ${model.model.M} T: ${model.model.T} Sv: ${model.model.Sv} W: ${model.model.W} Ld: ${model.model.Ld} OC: ${model.model.OC}\n`;
 
-    text += underline("Ranged weapons") + "\n";
+    text += blue(underline("Ranged weapons")) + "\n";
     for (const wargear of model.wargear) {
         if (wargear.type === "Ranged") {
             text += `${bold(wargear.name)}: ${wargear.description}` + "\n";
@@ -84,7 +84,7 @@ export function getModelBBCode(model: Model): string {
         }
     }
 
-    text += underline("Melee weapons") + "\n";
+    text += blue(underline("Melee weapons")) + "\n";
     for (const wargear of model.wargear) {
         if (wargear.type === "Melee") {
             text += `${bold(wargear.name)}: ${wargear.description}` + "\n";
@@ -92,14 +92,14 @@ export function getModelBBCode(model: Model): string {
         }
     }
 
-    text += underline("Abilities") + "\n";
+    text += blue(underline("Abilities")) + "\n";
     for (const ability of model.abilities) {
         if (ability) {
             text += `${italic(ability)}` + ", ";
         }
     }
 
-    text += underline("Keywords") + "\n";
+    text += blue(underline("Keywords")) + "\n";
     for (const keyword of model.keywords) {
         text += `${bold(keyword)}` + ", ";
     }
