@@ -125,83 +125,85 @@ export default function Home() {
           </p>
         </div>
         <div className="px-10 py-2 w-full border-b border-b-black dark:border-tyranids-200" />
-        <section className="flex flex-col gap-8 lg:w-1/3 my-4 text-xl">
-          <label className="flex flex-col gap-2">
-            <span className="text-tyranids-500 dark:text-tyranids-100">Armée</span>
-            <select
-              className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
-              value={faction}
-              onChange={onFactionSelect}
+        <div className="flex lg:flex-row justify-around w-full lg:h-2/3">
+          <section className="flex flex-col gap-8 lg:w-1/3 my-4 text-xl">
+            <label className="flex flex-col gap-2">
+              <span className="text-tyranids-500 dark:text-tyranids-100">Armée</span>
+              <select
+                className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
+                value={faction}
+                onChange={onFactionSelect}
+              >
+                <option value="">Sélectionnez une armée</option>
+                {
+                  factionList.map((faction) => (
+                    <option key={faction.id} value={faction.id}>{faction.name}</option>
+                  ))
+                }
+              </select>
+            </label>
+            {detachmentList.length > 0 && (
+              <label className="flex flex-col gap-2">
+                <span className="text-tyranids-500 dark:text-tyranids-100">Détachement</span>
+                <select
+                  className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
+                  value={detachment}
+                  onChange={(e) => setDetachment(e.target.value)}
+                >
+                  <option value="">Sélectionnez un détachement</option>
+                  {
+                    detachmentList.map((detachment) => (
+                      <option key={detachment.i_detachment} value={detachment.i_detachment}>{detachment.i_detachment}</option>
+                    ))
+                  }
+                </select>
+              </label>
+            )}
+            {unitList.length > 0 && (
+              <label className="flex flex-col gap-2">
+                <span className="text-tyranids-500 dark:text-tyranids-100">Unité</span>
+                <select
+                  className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
+                  value={unit}
+                  onChange={onUnitSelect}
+                >
+                  <option value="">Sélectionnez une unité</option>
+                  {
+                    unitList.map((unit) => (
+                      <option key={unit.id} value={unit.id}>{unit.name}</option>
+                    ))
+                  }
+                </select>
+              </label>
+            )}
+            {modelList.length > 1 && (
+              <label className="flex flex-col gap-2">
+                <span className="text-tyranids-500 dark:text-tyranids-100">Modèle</span>
+                <select
+                  className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
+                  value={model}
+                  onChange={(e) => setModel(e.target.value)}
+                >
+                  <option value="">Sélectionnez un modèle</option>
+                  {
+                    modelList.map((model) => (
+                      <option key={model.id} value={model.id}>{model.name}</option>
+                    ))
+                  }
+                </select>
+              </label>
+            )}
+            <button
+              className="w-fit px-4 py-2 bg-tyranids-500 text-white rounded-lg hover:bg-tyranids-400"
+              onClick={onSubmit}
             >
-              <option value="">Sélectionnez une armée</option>
-              {
-                factionList.map((faction) => (
-                  <option key={faction.id} value={faction.id}>{faction.name}</option>
-                ))
-              }
-            </select>
-          </label>
-          {detachmentList.length > 0 && (
-            <label className="flex flex-col gap-2">
-              <span className="text-tyranids-500 dark:text-tyranids-100">Détachement</span>
-              <select
-                className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
-                value={detachment}
-                onChange={(e) => setDetachment(e.target.value)}
-              >
-                <option value="">Sélectionnez un détachement</option>
-                {
-                  detachmentList.map((detachment) => (
-                    <option key={detachment.i_detachment} value={detachment.i_detachment}>{detachment.i_detachment}</option>
-                  ))
-                }
-              </select>
-            </label>
-          )}
-          {unitList.length > 0 && (
-            <label className="flex flex-col gap-2">
-              <span className="text-tyranids-500 dark:text-tyranids-100">Unité</span>
-              <select
-                className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
-                value={unit}
-                onChange={onUnitSelect}
-              >
-                <option value="">Sélectionnez une unité</option>
-                {
-                  unitList.map((unit) => (
-                    <option key={unit.id} value={unit.id}>{unit.name}</option>
-                  ))
-                }
-              </select>
-            </label>
-          )}
-          {modelList.length > 1 && (
-            <label className="flex flex-col gap-2">
-              <span className="text-tyranids-500 dark:text-tyranids-100">Modèle</span>
-              <select
-                className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-              >
-                <option value="">Sélectionnez un modèle</option>
-                {
-                  modelList.map((model) => (
-                    <option key={model.id} value={model.id}>{model.name}</option>
-                  ))
-                }
-              </select>
-            </label>
-          )}
-          <button
-            className="w-fit px-4 py-2 bg-tyranids-500 text-white rounded-lg hover:bg-tyranids-400"
-            onClick={onSubmit}
-          >
-            Générer
-          </button>
-        </section>
-        <section className="flex flex-col gap-8 h-full my-4 text-xl mt-10">
-          <TextArea text={text} />
-        </section>
+              Générer
+            </button>
+          </section>
+          <section className="flex flex-col gap-8 h-full my-4 text-xl mt-10 md:w-1/2">
+            <TextArea text={text} />
+          </section>
+        </div>
       </div>
     </div>
   );
