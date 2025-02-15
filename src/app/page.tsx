@@ -1,5 +1,6 @@
 "use client";
 
+import Banner from "@/components/Banner";
 import TextArea from "@/components/textarea";
 import { getModelBBCode } from "@/utils/bbcodeconverter";
 import { useEffect, useState } from "react";
@@ -17,10 +18,19 @@ export default function Home() {
   const [modelList, setModelList] = useState<Array<{ [key: string]: string }>>([]);
   const [model, setModel] = useState("");
 
+  const [lang, setLang] = useState("fr");
+
   const [text, setText] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [loadingTitle, setLoadingTitle] = useState("");
+  const [loadingDescription, setLoadingDescription] = useState("");
 
   useEffect(() => {
     const loadFactions = async () => {
+      setLoading(true);
+      setLoadingTitle("Chargement");
+      setLoadingDescription("Chargement des armées");
 
       const res = await fetch("/api/faction");
       if (!res.ok) {
@@ -30,12 +40,17 @@ export default function Home() {
 
       const data = await res.json();
       setFactionList(data);
+      setLoading(false);
     };
 
     loadFactions();
   }, []);
 
   const getDetachment = async (faction_id: string) => {
+    setLoading(true);
+    setLoadingTitle("Chargement");
+    setLoadingDescription("Chargement des détachements");
+
     const res = await fetch(`/api/detachement?faction_id=${faction_id}`);
     if (!res.ok) {
       console.error("Error fetching detachement list", res.status);
@@ -43,10 +58,14 @@ export default function Home() {
     }
 
     const data = await res.json();
+    setLoading(false);
     return data;
   }
 
   const getUnits = async (faction_id: string) => {
+    setLoading(true);
+    setLoadingTitle("Chargement");
+    setLoadingDescription("Chargement des unités");
     const res = await fetch(`/api/unit?faction_id=${faction_id}`);
     if (!res.ok) {
       console.error("Error fetching unit list", res.status);
@@ -54,6 +73,7 @@ export default function Home() {
     }
 
     const data = await res.json();
+    setLoading(false);
     return data;
   }
 
@@ -70,6 +90,10 @@ export default function Home() {
   }
 
   const getModels = async (unit_id: string) => {
+    setLoading(true);
+    setLoadingTitle("Chargement");
+    setLoadingDescription("Chargement des modèles");
+
     const res = await fetch(`/api/model?unit_id=${unit_id}`);
     if (!res.ok) {
       console.error("Error fetching model list", res.status);
@@ -77,6 +101,7 @@ export default function Home() {
     }
 
     const data = await res.json();
+    setLoading(false);
     return data;
   }
 
@@ -94,6 +119,10 @@ export default function Home() {
   }
 
   const getStats = async (model_line: string, unit_id: string, faction_id: string, detachement_name: string) => {
+    setLoading(true);
+    setLoadingTitle("Chargement");
+    setLoadingDescription("Chargement des statistiques");
+
     const res = await fetch(`/api/details?model_line=${model_line}&unit_id=${unit_id}&faction_id=${faction_id}&detachement_name=${detachement_name}`);
     if (!res.ok) {
       console.error("Error fetching stats", res.status);
@@ -101,6 +130,7 @@ export default function Home() {
     }
 
     const data = await res.json();
+    setLoading(false);
     return data;
   }
 
@@ -110,11 +140,11 @@ export default function Home() {
       return;
     }
     const stats = await getStats(model, unit, faction, detachment);
-    setText(getModelBBCode(stats));
+    setText(getModelBBCode(stats, lang));
   }
 
   return (
-    <div className="w-screen h-screen md:pl-[33%] lg:pl-[20%] bg-white dark:bg-dark-100">
+    <div className="w-screen h-screen md:pl-[33%] lg:pl-[20%] bg-white dark:bg-dark-100 mb-96">
       <div className="p-10 flex flex-col justify-start h-full">
         <div className="flex flex-col justify-start">
           <h1 className='text-4xl text-tyranids-500 dark:text-white font-bold'>
@@ -193,9 +223,24 @@ export default function Home() {
                 </select>
               </label>
             )}
+            {unitList.length > 0 && (
+              <label className="flex flex-col gap-2">
+                <span className="text-tyranids-500 dark:text-tyranids-100">langue</span>
+                <select
+                  className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value)}
+                >
+                  <option value="">Sélectionnez la langue des statistiques</option>
+                  <option value="fr">Français</option>
+                  <option value="en">Anglais</option>
+                </select>
+              </label>
+            )}
             <button
-              className="w-fit px-4 py-2 bg-tyranids-500 text-white rounded-lg hover:bg-tyranids-400"
+              className="w-fit px-4 py-2 bg-tyranids-500 text-white rounded-lg hover:bg-tyranids-400 disabled:bg-tyranids-200"
               onClick={onSubmit}
+              disabled={loading}
             >
               Générer
             </button>
@@ -205,6 +250,9 @@ export default function Home() {
           </section>
         </div>
       </div>
+      {
+        loading && <Banner title={loadingTitle} description={loadingDescription} />
+      }
     </div>
   );
 }

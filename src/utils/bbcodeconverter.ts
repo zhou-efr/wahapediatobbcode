@@ -62,7 +62,7 @@ type Model = {
 }
 */
 
-export function getModelBBCode(model: Model): string {
+export function getModelBBCode(model: Model, lang: string): string {
     let text = "";
 
     const bold = (text: string): string => { return `[b]${text}[/b]` };
@@ -74,32 +74,60 @@ export function getModelBBCode(model: Model): string {
 
     text += red(bold(model.model.name)) + "\n";
     text += underline("stats") + "\n";
-    text += `M: ${model.model.M} T: ${model.model.T} Sv: ${model.model.Sv} W: ${model.model.W} Ld: ${model.model.Ld} OC: ${model.model.OC}\n`;
+    if (lang === "en") {
+        text += `M: ${model.model.M} T: ${model.model.T} Sv: ${model.model.Sv} W: ${model.model.W} Ld: ${model.model.Ld} OC: ${model.model.OC}` + "\n";
+    } else {
+        text += `M: ${model.model.M} E: ${model.model.T} Sv: ${model.model.Sv} PV: ${model.model.W} Cd: ${model.model.Ld} CO: ${model.model.OC}` + "\n";
+    }
 
-    text += blue(underline("Ranged weapons")) + "\n";
+    if (lang === "en") {
+      text += blue(underline("Ranged weapons")) + "\n";
+    } else {
+      text += blue(underline("Armes de tir")) + "\n";
+    }
     for (const wargear of model.wargear) {
         if (wargear.type === "Ranged") {
             text += `${bold(wargear.name)}: ${wargear.description}` + "\n";
-            text += `Range: ${wargear.range} A: ${wargear.A} BS: ${wargear.BS_WS} S: ${wargear.S} AP: ${wargear.AP} D: ${wargear.D}` + "\n";
+            if (lang === "en") {
+              text += `Range: ${wargear.range}" A: ${wargear.A} BS: ${wargear.BS_WS}+ S: ${wargear.S} AP: ${wargear.AP} D: ${wargear.D}` + "\n";
+            } else {
+              text += `Portée: ${wargear.range}" A: ${wargear.A} CT: ${wargear.BS_WS}+ F: ${wargear.S} PA: ${wargear.AP} D: ${wargear.D}` + "\n";
+            }
         }
     }
 
-    text += blue(underline("Melee weapons")) + "\n";
+    if (lang === "en") {
+      text += blue(underline("Melee weapons")) + "\n";
+    } else {
+      text += blue(underline("Armes de mêlée")) + "\n";
+    }
     for (const wargear of model.wargear) {
         if (wargear.type === "Melee") {
             text += `${bold(wargear.name)}: ${wargear.description}` + "\n";
-            text += `Range: ${wargear.range} A: ${wargear.A} WS: ${wargear.BS_WS} S: ${wargear.S} AP: ${wargear.AP} D: ${wargear.D}` + "\n";
+            if (lang === "en") {
+              text += `Range: ${wargear.range} A: ${wargear.A} WS: ${wargear.BS_WS}+ S: ${wargear.S} AP: ${wargear.AP} D: ${wargear.D}` + "\n";
+            } else {
+              text += `Portée: ${wargear.range} A: ${wargear.A} CC: ${wargear.BS_WS}+ F: ${wargear.S} PA: ${wargear.AP} D: ${wargear.D}` + "\n";
+            }
         }
     }
 
-    text += blue(underline("Abilities")) + "\n";
+    if (lang === "en") {
+      text += blue(underline("Abilities")) + "\n";
+    } else {
+      text += blue(underline("Aptitudes")) + "\n";
+    }
     for (const ability of model.abilities) {
         if (ability) {
             text += `${italic(ability)}` + ", ";
         }
     }
 
-    text += blue(underline("Keywords")) + "\n";
+    if (lang === "en") {
+      text += blue(underline("Keywords")) + "\n";
+    } else {
+      text += blue(underline("Mots-clés")) + "\n";
+    }
     for (const keyword of model.keywords) {
         text += `${bold(keyword)}` + ", ";
     }
