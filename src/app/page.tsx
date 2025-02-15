@@ -145,7 +145,7 @@ export default function Home() {
     setLoading(true);
     setLoadingTitle("Génération");
     setLoadingDescription("Convertion du texte");
-    let bbcode = getModelBBCode(stats, lang);
+    const bbcode = getModelBBCode(stats, lang);
     console.log(bbcode);
     setText(bbcode);
     setLoading(false);
