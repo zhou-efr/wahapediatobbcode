@@ -140,7 +140,15 @@ export default function Home() {
       return;
     }
     const stats = await getStats(model, unit, faction, detachment);
-    setText(getModelBBCode(stats, lang));
+    console.log(stats);
+    
+    setLoading(true);
+    setLoadingTitle("Génération");
+    setLoadingDescription("Convertion du texte");
+    let bbcode = getModelBBCode(stats, lang);
+    console.log(bbcode);
+    setText(bbcode);
+    setLoading(false);
   }
 
   return (
