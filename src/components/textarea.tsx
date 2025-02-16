@@ -1,9 +1,8 @@
 'use client'
 
-import { useRef } from "react"
+import { MutableRefObject } from "react"
 
-export default function TextArea({ text }: { text: string }) {
-    const textAreaRef = useRef<HTMLTextAreaElement>(null)
+export default function TextArea({ text, textAreaRef }: { text: string, textAreaRef: MutableRefObject<HTMLTextAreaElement | null> }) {
 
     const handleCopy = () => {
         textAreaRef.current?.select()

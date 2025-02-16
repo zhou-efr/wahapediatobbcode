@@ -3,7 +3,7 @@
 import Banner from "@/components/Banner";
 import TextArea from "@/components/textarea";
 import { getModelBBCode } from "@/utils/bbcodeconverter";
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export default function Home() {
   const [factionList, setFactionList] = useState<Array<{ [key: string]: string }>>([]);
@@ -21,6 +21,7 @@ export default function Home() {
   const [lang, setLang] = useState("fr");
 
   const [text, setText] = useState("");
+  const textarearef = useRef<HTMLTextAreaElement>(null);
 
   const [loading, setLoading] = useState(false);
   const [loadingTitle, setLoadingTitle] = useState("");
@@ -148,6 +149,9 @@ export default function Home() {
     const bbcode = getModelBBCode(stats, lang);
     console.log(bbcode);
     setText(bbcode);
+    if (textarearef.current) {
+      textarearef.current.value = bbcode;
+    }
     setLoading(false);
   }
 
@@ -254,7 +258,7 @@ export default function Home() {
             </button>
           </section>
           <section className="flex flex-col gap-8 h-full my-4 text-xl mt-10 md:w-1/2">
-            <TextArea text={text} />
+            <TextArea text={text} textAreaRef={textarearef} />
           </section>
         </div>
       </div>
