@@ -133,6 +133,8 @@ export function getModelBBCode(model: Model, lang: string, enhancement:string): 
     }
     
     text += "\n";
+    
+    if (enhancement === "") return text;
 
     if (lang === "en") {
       text += blue(underline("Enhancement")) + "\n";
