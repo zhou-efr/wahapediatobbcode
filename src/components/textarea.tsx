@@ -9,7 +9,7 @@ export default function TextArea({ text, textAreaRef }: { text: string, textArea
         textAreaRef.current?.setSelectionRange(0, 99999)
         navigator?.clipboard?.writeText(textAreaRef.current?.value || '')
     }
-
+    
     return (
         <div className="relative h-full">
             <div className="flex flex-col justify-between overflow-hidden h-full rounded-lg border border-gray-300 shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">

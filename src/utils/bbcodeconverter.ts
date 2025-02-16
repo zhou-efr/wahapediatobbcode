@@ -62,7 +62,7 @@ type Model = {
 }
 */
 
-export function getModelBBCode(model: Model, lang: string): string {
+export function getModelBBCode(model: Model, lang: string, enhancement:string): string {
     let text = "";
 
     const bold = (text: string): string => { return `[b]${text}[/b]` };
@@ -131,6 +131,15 @@ export function getModelBBCode(model: Model, lang: string): string {
     for (const keyword of model.keywords) {
         text += `${bold(keyword)}` + ", ";
     }
+    
+    text += "\n";
+
+    if (lang === "en") {
+      text += blue(underline("Enhancement")) + "\n";
+    } else {
+      text += blue(underline("Optimisation")) + "\n";
+    }
+    text += `${bold(enhancement)}` + "\n";
 
     return text;
 }

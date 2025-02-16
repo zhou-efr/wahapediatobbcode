@@ -12,6 +12,9 @@ export default function Home() {
   const [detachmentList, setDetachmentList] = useState<Array<{ [key: string]: string }>>([]);
   const [detachment, setDetachment] = useState("");
 
+  const [enhancementList, setEnhancementList] = useState<Array<{ [key: string]: string }>>([]);
+  const [enhancement, setEnhancement] = useState("");
+
   const [unitList, setUnitList] = useState<Array<{ [key: string]: string }>>([]);
   const [unit, setUnit] = useState("");
 
@@ -63,6 +66,22 @@ export default function Home() {
     return data;
   }
 
+  const getEnhancements = async (detachment: string) => {
+    setLoading(true);
+    setLoadingTitle("Chargement");
+    setLoadingDescription("Chargement des améliorations");
+
+    const res = await fetch(`/api/enhancement?detachment=${detachment}`);
+    if (!res.ok) {
+      console.error("Error fetching enhancement list", res.status);
+      return;
+    }
+
+    const data = await res.json();
+    setLoading(false);
+    return data;
+  }
+
   const getUnits = async (faction_id: string) => {
     setLoading(true);
     setLoadingTitle("Chargement");
@@ -87,6 +106,15 @@ export default function Home() {
 
       const units = await getUnits(e.target.value);
       setUnitList(units);
+    }
+  }
+
+  const onDetachmentSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDetachment(e.target.value);
+
+    if (e.target.value) {
+      const enhancements = await getEnhancements(e.target.value);
+      setEnhancementList(enhancements);
     }
   }
 
@@ -146,7 +174,7 @@ export default function Home() {
     setLoading(true);
     setLoadingTitle("Génération");
     setLoadingDescription("Convertion du texte");
-    const bbcode = getModelBBCode(stats, lang);
+    const bbcode = getModelBBCode(stats, lang, enhancement);
     console.log(bbcode);
     setText(bbcode);
     if (textarearef.current) {
@@ -190,7 +218,7 @@ export default function Home() {
                 <select
                   className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
                   value={detachment}
-                  onChange={(e) => setDetachment(e.target.value)}
+                  onChange={onDetachmentSelect}
                 >
                   <option value="">Sélectionnez un détachement</option>
                   {
@@ -201,6 +229,25 @@ export default function Home() {
                 </select>
               </label>
             )}
+            {
+              enhancementList.length > 0 && (
+                <label className="flex flex-col gap-2">
+                  <span className="text-tyranids-500 dark:text-tyranids-100">Optimisation</span>
+                  <select
+                    className="w-full p-2 border border-tyranids-200 rounded-lg bg-white dark:bg-dark-100"
+                    value={enhancement}
+                    onChange={(e) => setEnhancement(e.target.value)}
+                  >
+                    <option value="">Sélectionnez une optimisation</option>
+                    {
+                      enhancementList.map((enhancement) => (
+                        <option key={enhancement.i_enhancement} value={enhancement.i_enhancement}>{enhancement.i_enhancement}</option>
+                      ))
+                    }
+                  </select>
+                </label>
+              )
+            }
             {unitList.length > 0 && (
               <label className="flex flex-col gap-2">
                 <span className="text-tyranids-500 dark:text-tyranids-100">Unité</span>
